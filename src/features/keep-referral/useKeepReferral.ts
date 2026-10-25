@@ -32,15 +32,15 @@ export function useKeepReferral(surface: ReferralSurface) {
     if (optOut) await repo.logReferralEvent('opt_out', surface);
   }).run;
 
-  const open = useMutation(async (repo) => {
+  const open = useMutation(async (repo, target: 'site' | 'account' = 'site') => {
     let ref = await repo.getSetting(settingsKeys.installRef);
     if (!ref) {
       ref = newId();
       await repo.setSetting(settingsKeys.installRef, ref);
     }
     await repo.logReferralEvent('open', surface);
-    // In-app browser (SFSafariViewController / Custom Tabs): user stays in For Keeps and can close it anytime.
-    await WebBrowser.openBrowserAsync(buildReferralUrl(surface, ref));
+    // In-app browser (SFSafariViewController / Custom Tabs): user stays in Keep Forever and can close it anytime.
+    await WebBrowser.openBrowserAsync(buildReferralUrl(surface, ref, target));
   }).run;
 
   return {

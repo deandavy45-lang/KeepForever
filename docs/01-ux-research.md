@@ -22,7 +22,7 @@
 | Artifact Uprising / Shutterfly | Beautiful print quality | Desktop-centric editors, endless coupon pressure |
 | Tinybeans | Private family sharing, high retention around kids | Ad-heavy free tier erodes trust |
 
-**Gap For Keeps fills:** a calm, private, story-first family vault that makes print easy
+**Gap Keep Forever fills:** a calm, private, story-first family vault that makes print easy
 and later hands the vault on, which is the natural bridge to The Keep.
 
 ## Retention loops (in priority order)
@@ -36,7 +36,7 @@ and later hands the vault on, which is the natural bridge to The Keep.
 ## UI principles used in the components
 
 - **Warm heirloom palette** (cream, ink, terracotta) with a separate **green "legacy" tone**
-  reserved only for The Keep so it never feels like a For Keeps upsell.
+  reserved only for The Keep so it never feels like a Keep Forever upsell.
 - Serif display type for titles (keepsake feel), system sans for body (legibility).
 - Every touch target ≥ 48pt; every interactive element has an accessibility label.
 - Light and dark themes from one token set (`src/core/theme/tokens.ts`).

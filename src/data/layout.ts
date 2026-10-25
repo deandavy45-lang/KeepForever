@@ -30,6 +30,8 @@ export function autoLayout(title: string, memories: MemoryWithMedia[]): DraftPag
       }),
     );
   }
+  // Back cover is the only place the Keep Forever hallmark may appear (see features/books/brand.ts).
+  pages.push({ layout: 'back_cover', assetIds: [], heading: null, body: null });
   return pages;
 }
 

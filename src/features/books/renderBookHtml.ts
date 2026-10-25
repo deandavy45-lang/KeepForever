@@ -1,4 +1,5 @@
 import type { BookWithPages } from '@/data';
+import { BACK_COVER_HALLMARK, HALLMARK_STYLE } from './brand';
 import { BLEED_IN, SAFE_MARGIN_IN, trimSizes } from './trimSizes';
 
 const esc = (s: string) =>
@@ -17,13 +18,23 @@ export function renderBookHtml(book: BookWithPages, opts: { bleed: boolean; reso
   const src = (u: string) => esc(opts.resolve ? opts.resolve(u) : u);
   const img = (u: string) => `<div class="img" style="background-image:url('${src(u)}')"></div>`;
 
-  const pages = book.pages
+  // Every exported book ends on the hallmark back cover, even drafts made before it existed.
+  const source = book.pages.some((p) => p.layout === 'back_cover')
+    ? book.pages
+    : [...book.pages, { layout: 'back_cover' as const, uris: [], heading: null, body: null }];
+
+  const pages = source
     .map((p) => {
       const heading = p.heading ? `<h2>${esc(p.heading)}</h2>` : '';
       const body = p.body ? `<p>${esc(p.body)}</p>` : '';
       switch (p.layout) {
-        case 'cover':
-          return `<section class="page cover">${p.uris[0] ? img(p.uris[0]) : ''}<div class="cover-title"><h1>${esc(p.heading ?? book.title)}</h1>${book.subtitle ? `<p>${esc(book.subtitle)}</p>` : ''}</div></section>`;
+        case 'cover': {
+          // User content only: no brand marks on the front cover.
+          const emblem = book.emblemUri ? `<img class="emblem" src="${src(book.emblemUri)}" alt="">` : '';
+          return `<section class="page cover">${p.uris[0] ? img(p.uris[0]) : ''}<div class="cover-title">${emblem}<h1>${esc(book.title)}</h1>${book.subtitle ? `<p>${esc(book.subtitle)}</p>` : ''}</div></section>`;
+        }
+        case 'back_cover':
+          return `<section class="page back"><div class="hallmark"><span class="rule"></span>${esc(BACK_COVER_HALLMARK)}</div></section>`;
         case 'full_bleed':
           return `<section class="page full">${p.uris[0] ? img(p.uris[0]) : ''}${heading ? `<div class="overlay">${heading}</div>` : ''}</section>`;
         case 'photo_caption':
@@ -50,6 +61,12 @@ html, body { background: #fff; color: #2B2622; font-family: Georgia, 'Times New 
 .full .img, .cover .img { position: absolute; inset: 0; }
 .cover-title { position: absolute; left: 0; right: 0; bottom: ${0.9 + bleed}in; text-align: center; color: #fff; text-shadow: 0 1px 12px rgba(0,0,0,.5); }
 .cover-title h1 { font-size: 34pt; font-weight: 600; }
+.cover-title p { font-size: 13pt; letter-spacing: 0.08em; margin-top: 8pt; }
+.emblem { width: 0.9in; height: 0.9in; object-fit: contain; margin-bottom: 10pt; }
+.back { background: #FBF7F1; }
+.hallmark { position: absolute; left: 0; right: 0; bottom: ${HALLMARK_STYLE.bottomIn + bleed}in; text-align: center;
+  font-variant: small-caps; font-size: ${HALLMARK_STYLE.fontSizePt}pt; letter-spacing: ${HALLMARK_STYLE.letterSpacingEm}em; color: ${HALLMARK_STYLE.color}; }
+.hallmark .rule { display: block; width: 0.45in; height: 0.5pt; margin: 0 auto 6pt; background: ${HALLMARK_STYLE.color}; }
 .overlay { position: absolute; left: ${SAFE_MARGIN_IN + bleed}in; bottom: ${SAFE_MARGIN_IN + bleed}in; color: #fff; text-shadow: 0 1px 10px rgba(0,0,0,.5); }
 .caption .img { flex: 1; border-radius: 2pt; }
 .grid { flex: 1; display: grid; gap: 0.15in; }

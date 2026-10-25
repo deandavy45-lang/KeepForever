@@ -1,11 +1,11 @@
-# For Keeps
+# Keep Forever
 
 Family photo, memory, and keepsake-book app for iOS and Android. Local-first, private by
 default, with a calm, opt-in bridge to **The Keep** for estate and legacy planning.
 
 ## Open in VS Code (2 minutes)
 
-1. Unzip, then **File → Open Folder…** and pick `for-keeps`. Accept the recommended extensions.
+1. Unzip, then **File → Open Folder…** and pick `keep-forever`. Accept the recommended extensions.
 2. Install Node.js 20+ (https://nodejs.org) if you don't have it.
 3. Terminal → **Run Task… → Install** (or `npm install`).
 4. Terminal → **Run Task… → Preview in browser** (or `npm run web`), then open http://localhost:8081.
@@ -33,17 +33,25 @@ npm run submit               # upload to App Store Connect and Google Play Conso
 
 Before the first submission, work through `docs/04-store-compliance.md`.
 
+## Book branding rules
+
+Front covers and spines are 100% the family's own (title, family-name line, emblem, cover photo,
+spine text) with no brand marks. The only branding in an exported book is a small hallmark at the
+bottom centre of the back cover: *Curated with Keep Forever • Protected by The Keep*.
+Policy and styling live in `src/features/books/brand.ts`.
+
 ## Configuration
 
 Copy `.env.example` to `.env`:
 
 | Variable | Purpose |
 |---|---|
-| `EXPO_PUBLIC_KEEP_REFERRAL_URL` | The Keep landing page for the referral link |
+| `EXPO_PUBLIC_KEEP_REFERRAL_URL` | The Keep public site (default `https://thekeepvault.co.za`) |
+| `EXPO_PUBLIC_KEEP_ACCOUNT_URL` | The Keep account portal (default `https://admin.thekeepvault.co.za`) |
 | `EXPO_PUBLIC_SUPABASE_URL`, `EXPO_PUBLIC_SUPABASE_ANON_KEY` | Optional cloud backup/sharing (leave blank for offline-only) |
 
 Feature flags: `src/core/config/features.ts` (`keepReferral`, `printOrdering`, `cloudSync`).
-App identity (name, bundle IDs `com.forkeeps.app`, permissions): `app.json`.
+App identity (name, bundle IDs `za.co.thekeepvault.keepforever`, permissions): `app.json`.
 
 ## Docs
 

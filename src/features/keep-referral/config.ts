@@ -1,5 +1,5 @@
 /**
- * Every rule that decides when For Keeps mentions The Keep lives here, so product,
+ * Every rule that decides when Keep Forever mentions The Keep lives here, so product,
  * legal, and app-review owners can audit the funnel in one file.
  */
 export const keepReferralConfig = {
@@ -10,7 +10,7 @@ export const keepReferralConfig = {
   cooldownDaysAfterDismiss: 60,
   /** After this many dismissals the proactive card retires for good (Settings row remains). */
   maxDismissals: 2,
-  utm: { utm_source: 'forkeeps', utm_medium: 'app', utm_campaign: 'legacy_referral' },
+  utm: { utm_source: 'keepforever', utm_medium: 'app', utm_campaign: 'legacy_referral' },
 } as const;
 
 export type ReferralSurface = 'timeline_card' | 'book_export' | 'settings_row';

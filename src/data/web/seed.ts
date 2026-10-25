@@ -1,7 +1,7 @@
 import type { Repository } from '../repository';
 
 const photo = (seed: string) => ({
-  uri: `https://picsum.photos/seed/forkeeps-${seed}/900/700`,
+  uri: `https://picsum.photos/seed/keepforever-${seed}/900/700`,
   width: 900,
   height: 700,
   mimeType: 'image/jpeg',

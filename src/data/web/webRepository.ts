@@ -3,6 +3,7 @@ import { autoLayout } from '../layout';
 import type { Repository } from '../repository';
 import type {
   Album,
+  BookCoverPatch,
   BookPage,
   ID,
   KeepsakeBook,
@@ -32,7 +33,7 @@ interface State {
   referralEvents: { id: ID; kind: ReferralEventKind; surface: string; createdAt: string }[];
 }
 
-const KEY = 'forkeeps.preview.v1';
+const KEY = 'keepforever.preview.v2';
 const live = <T extends { deletedAt: string | null }>(xs: T[]) => xs.filter((x) => !x.deletedAt);
 
 export class WebRepository implements Repository {
@@ -142,7 +143,7 @@ export class WebRepository implements Repository {
     if (!album) throw new Error('Album not found');
     const t = now();
     const id = newId();
-    this.s.books.push({ id, vaultId: this.s.vaultId, albumId, title: album.title, subtitle: null, trimSize, status: 'draft', createdAt: t, updatedAt: t, deletedAt: null });
+    this.s.books.push({ id, vaultId: this.s.vaultId, albumId, title: album.title, subtitle: null, spineText: null, emblemUri: null, trimSize, status: 'draft', createdAt: t, updatedAt: t, deletedAt: null });
     autoLayout(album.title, album.memories).forEach((p, i) =>
       this.s.pages.push({ ...p, id: newId(), bookId: id, position: i, createdAt: t, updatedAt: t, deletedAt: null }),
     );
@@ -155,6 +156,18 @@ export class WebRepository implements Repository {
     if (b && b.status === 'draft') {
       b.status = 'exported';
       b.updatedAt = now();
+    }
+    this.save();
+  }
+
+  async updateBookCover(id: ID, patch: BookCoverPatch) {
+    const b = this.s.books.find((x) => x.id === id);
+    if (!b) return;
+    const { coverAssetId, ...fields } = patch;
+    Object.assign(b, fields, { updatedAt: now() });
+    if (coverAssetId !== undefined) {
+      const cover = this.s.pages.find((p) => p.bookId === id && p.layout === 'cover');
+      if (cover) cover.assetIds = coverAssetId ? [coverAssetId] : [];
     }
     this.save();
   }

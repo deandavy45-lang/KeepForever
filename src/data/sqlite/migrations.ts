@@ -100,4 +100,8 @@ export const migrations: string[] = [
 
   CREATE TABLE settings (key TEXT PRIMARY KEY NOT NULL, value TEXT NOT NULL);
   `,
+  /* 2: customizable, unbranded covers */ `
+  ALTER TABLE books ADD COLUMN spine_text TEXT;
+  ALTER TABLE books ADD COLUMN emblem_uri TEXT;
+  `,
 ];

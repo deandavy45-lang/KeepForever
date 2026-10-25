@@ -1,4 +1,4 @@
--- For Keeps cloud schema (Supabase / Postgres 15+).
+-- Keep Forever cloud schema (Supabase / Postgres 15+).
 -- Mirrors src/data/sqlite/migrations.ts so local rows sync 1:1, plus multi-user vault
 -- membership and row-level security. Apply with: supabase db push
 
@@ -138,7 +138,7 @@ create table public.print_orders (
 
 -- ---------- The Keep referral bridge ----------
 -- Only anonymous install refs; linking to a Keep account happens on The Keep side after the
--- user signs up there and explicitly chooses to connect For Keeps.
+-- user signs up there and explicitly chooses to connect Keep Forever.
 create table public.keep_referrals (
   install_ref uuid primary key,
   user_id uuid references auth.users(id) on delete set null,

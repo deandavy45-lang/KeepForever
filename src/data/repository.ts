@@ -1,5 +1,6 @@
 import type {
   Album,
+  BookCoverPatch,
   AlbumSummary,
   BookWithPages,
   ID,
@@ -34,6 +35,8 @@ export interface Repository {
   /** Builds a draft book with an auto-generated layout from an album's memories. */
   createBookFromAlbum(albumId: ID, trimSize: TrimSize): Promise<ID>;
   markBookExported(id: ID): Promise<void>;
+  /** Title, family-name line, spine text, emblem, and cover photo. */
+  updateBookCover(id: ID, patch: BookCoverPatch): Promise<void>;
 
   getStats(): Promise<VaultStats>;
   getSetting(key: string): Promise<string | null>;

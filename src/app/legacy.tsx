@@ -18,7 +18,7 @@ export default function LegacyScreen() {
   ];
   return (
     <Screen>
-      <Text variant="label" style={{ color: c.legacy }}>A SEPARATE SERVICE FROM THE MAKERS OF FOR KEEPS</Text>
+      <Text variant="label" style={{ color: c.legacy }}>A SEPARATE SERVICE FROM THE MAKERS OF KEEP FOREVER</Text>
       <Text variant="display">Make sure your memories reach the right hands</Text>
       <Text muted>
         The Keep helps families plan for the future: what happens to their memories, wishes, and important documents.
@@ -34,11 +34,12 @@ export default function LegacyScreen() {
       <Card style={{ backgroundColor: c.legacySoft, borderColor: c.legacy }}>
         <Text variant="heading">What we share</Text>
         <Text muted>
-          Nothing from your vault. Opening The Keep only tells it you came from For Keeps. Your photos and stories stay
-          here unless you choose to move them. For Keeps works fully without The Keep.
+          Nothing from your vault. Opening The Keep only tells it you came from Keep Forever. Your photos and stories stay
+          here unless you choose to move them. Keep Forever works fully without The Keep.
         </Text>
       </Card>
-      <Button label="Visit The Keep" tone="legacy" onPress={() => open()} />
+      <Button label="Visit The Keep" tone="legacy" onPress={() => open('site')} />
+      <Button label="I already have a Keep account" tone="secondary" onPress={() => open('account')} />
       <Button label="Not now" tone="ghost" onPress={() => router.back()} />
     </Screen>
   );

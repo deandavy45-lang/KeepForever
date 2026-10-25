@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
 import { create } from 'zustand';
 import { createRepository } from './createRepository';
 import type { Repository } from './repository';
@@ -54,18 +54,20 @@ export function useMutation<A extends unknown[], R>(fn: (repo: Repository, ...ar
   const repo = useRepository();
   const bump = useDataVersion((s) => s.bump);
   const [pending, setPending] = useState(false);
+  // Always call the latest fn so callers' closures see current state, while `run` stays stable.
+  const fnRef = useRef(fn);
+  fnRef.current = fn;
   const run = useCallback(
     async (...args: A) => {
       setPending(true);
       try {
-        const r = await fn(repo, ...args);
+        const r = await fnRef.current(repo, ...args);
         bump();
         return r;
       } finally {
         setPending(false);
       }
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [repo, bump],
   );
   return { run, pending };

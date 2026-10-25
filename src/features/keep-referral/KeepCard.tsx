@@ -38,7 +38,7 @@ export function KeepCard({ surface }: { surface: Exclude<ReferralSurface, 'setti
       <Text variant="heading">You've built something worth protecting</Text>
       <Text muted>
         The Keep helps families plan what happens to their memories, wishes, and important
-        documents in the future. It's optional and separate from For Keeps.
+        documents in the future. It's optional and separate from Keep Forever.
       </Text>
       <Button label="Learn about The Keep" tone="legacy" onPress={() => router.push('/legacy')} />
     </View>

@@ -1,21 +1,50 @@
 # 04 · App Store & Google Play compliance
 
+App: **Keep Forever** (bundle/package `za.co.thekeepvault.keepforever`).
+
 Status key: ✅ handled in this build · 🔜 needed before submission · ⚠️ decision/legal review needed.
 Guideline numbers refer to Apple's App Review Guidelines and Google Play Developer Policy as of late 2026; re-check at submission.
 
-## Highest-risk item first
+## Positioning of The Keep (confirmed 2026-10-25)
 
-⚠️ **The Keep link and Apple's payment rules (3.1.1 / 3.1.3).** Linking to a separate service is
-fine when it is informational and the service is a real-world/professional one (estate planning,
-legal custody). It becomes a problem if For Keeps shows The Keep's *prices* or a *buy* button for a
-*digital* subscription. Keep the in-app surface informational ("Learn about The Keep"), keep pricing
-and checkout on The Keep's own site, and have counsel confirm how The Keep's product is classified.
-US-storefront rules on external purchase links have loosened since 2025; other storefronts vary.
+- **Entities:** The Keep is operated by The Keep Technologies (Pty) Ltd / The Keep Foundation NPC,
+  in the same corporate group as Keep Forever.
+- **Monetization:** Keep Forever is a standalone consumer utility. The Keep is an external
+  estate/legacy ecosystem paid through its own web gateways (`thekeepvault.co.za`,
+  `admin.thekeepvault.co.za`). No Keep purchase happens inside Keep Forever.
+- **In-app framing:** an informational referral and account-link bridge to an external legacy
+  vault partner service.
 
-⚠️ **Tracking (ATT / Play data sharing).** The referral URL carries only UTM tags and an anonymous
-per-install token. If The Keep is a *different legal entity* and later joins that token to a named
-account, Apple may treat it as cross-company tracking. Either keep it first-party (same company),
-or ask for ATT consent before attaching the token.
+### How the build enforces that
+
+| Rule | Where |
+|---|---|
+| No prices, plans, or "buy" buttons for The Keep anywhere in the app | `legacy.tsx`, `KeepCard.tsx` |
+| Links open the external site in the system in-app browser; checkout stays on The Keep's web gateway | `useKeepReferral.ts` |
+| "Visit The Keep" → `thekeepvault.co.za`; "I already have a Keep account" → `admin.thekeepvault.co.za` | `env.ts`, `.env.example` |
+| Labelled as a separate partner service, dismissible, opt-out in Settings | `KeepCard.tsx`, `settings.tsx` |
+| No vault data leaves the app through the link (UTM tags + anonymous install ref only) | `buildReferralUrl.ts` |
+
+### Guideline basis
+
+✅ **Apple 3.1.3(e), goods and services outside the app.** Estate planning, will custody, and
+professional legacy services are consumed outside the app, so they may be sold on the web. This is
+the rule to cite in App Review notes. 3.1.3(a) "reader apps" and 3.1.3(b) "multiplatform services"
+don't fit Keep Forever (it doesn't unlock content bought elsewhere), so don't rely on them.
+
+⚠️ **Keep it informational.** If Keep Forever ever unlocks a feature because the user paid The Keep
+(for example "Keep members get unlimited storage"), that becomes digital content and needs IAP
+under 3.1.1. Keep any paid Keep Forever features (storage tiers) on StoreKit / Play Billing.
+
+⚠️ **Tracking (ATT).** The Keep companies are separate legal entities in the same group. The build
+avoids tracking by default: nothing identifying is sent, and the install ref is only joined to a
+person when they sign in on The Keep and choose to link Keep Forever. Have counsel confirm that the
+group structure plus this consent step keeps you outside Apple's "tracking" definition; if not,
+show the ATT prompt before attaching the ref.
+
+✅ **Suggested App Review note:** "The Keep is an external estate-planning and legacy-vault service
+from our corporate group. Keep Forever links to its website for information and sign-in only. No
+digital content or features in Keep Forever are sold or unlocked through The Keep (3.1.3(e))."
 
 ## Apple App Store
 
@@ -48,7 +77,8 @@ or ask for ATT consent before attaching the token.
 
 ## Other legal
 
-- 🔜 Privacy policy + terms (required by both stores). Cover photos of minors, GDPR/UK GDPR/CCPA rights.
+- 🔜 Privacy policy + terms (required by both stores). Cover photos of minors, POPIA (South Africa, primary market), GDPR/UK GDPR/CCPA rights.
+- 🔜 Name the responsible party and Information Officer under POPIA in the privacy policy.
 - ⚠️ Estate-planning claims in The Keep copy ("qualified professionals", "will custody") must be
   reviewed for each launch country's legal-services advertising rules.
 - ⚠️ Memorial/deceased-user content: define what happens to a vault when the owner dies (the

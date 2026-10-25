@@ -58,15 +58,29 @@ export interface Album extends Syncable {
 
 export type TrimSize = 'square_8' | 'letter_portrait' | 'a4_portrait' | 'landscape_11x8_5';
 export type BookStatus = 'draft' | 'exported' | 'ordered';
-export type PageLayout = 'cover' | 'full_bleed' | 'photo_caption' | 'two_up' | 'grid_four' | 'story';
+export type PageLayout = 'cover' | 'full_bleed' | 'photo_caption' | 'two_up' | 'grid_four' | 'story' | 'back_cover';
 
 export interface KeepsakeBook extends Syncable {
   vaultId: ID;
   albumId: ID | null;
   title: string;
+  /** Cover line for family names, e.g. "The Davy Family · 1998–2024". */
   subtitle: string | null;
+  /** Printed on the spine by the bindery. User text only, never brand text. */
+  spineText: string | null;
+  /** Optional family crest/emblem image shown on the front cover. */
+  emblemUri: string | null;
   trimSize: TrimSize;
   status: BookStatus;
+}
+
+/** User-editable cover fields. Covers and spines carry zero Keep Forever branding. */
+export interface BookCoverPatch {
+  title?: string;
+  subtitle?: string | null;
+  spineText?: string | null;
+  emblemUri?: string | null;
+  coverAssetId?: ID | null;
 }
 
 export interface BookPage extends Syncable {

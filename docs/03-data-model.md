@@ -22,7 +22,7 @@ keep_referrals (cloud) · referral_events, settings (device only)
 | `media_assets` | Photos in a memory | `local_uri` on device, `remote_path` once uploaded |
 | `people`, `memory_people` | Who is in a memory | Powers person albums and the legacy hand-off later |
 | `albums`, `album_memories` | Ordered collections | `kind`: manual, year, person (smart albums later) |
-| `books`, `book_pages` | Keepsake book drafts | `trim_size`, page `layout`, ordered `asset_ids` |
+| `books`, `book_pages` | Keepsake book drafts | `trim_size`, user cover fields (`subtitle`, `spine_text`, `emblem_uri`), page `layout` incl. `back_cover`, ordered `asset_ids` |
 | `print_orders` | Courier-bound orders | Physical goods, paid outside IAP |
 | `referral_events` | Local log of Keep card impressions/opens/dismissals | Drives frequency caps; never uploaded with PII |
 | `keep_referrals` | Anonymous install ref → optional Keep account link | Linked only after the user signs up on The Keep and consents |

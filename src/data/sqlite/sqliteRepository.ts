@@ -5,6 +5,7 @@ import { autoLayout } from '../layout';
 import type { Repository } from '../repository';
 import type {
   Album,
+  BookCoverPatch,
   AlbumSummary,
   BookPage,
   BookWithPages,
@@ -36,6 +37,7 @@ const toAlbum = (r: Row): Album => ({
 });
 const toBook = (r: Row): KeepsakeBook => ({
   id: r.id, vaultId: r.vault_id, albumId: r.album_id, title: r.title, subtitle: r.subtitle,
+  spineText: r.spine_text ?? null, emblemUri: r.emblem_uri ?? null,
   trimSize: r.trim_size, status: r.status, createdAt: r.created_at, updatedAt: r.updated_at, deletedAt: r.deleted_at,
 });
 const toPage = (r: Row): BookPage => ({
@@ -218,6 +220,23 @@ export class SQLiteRepository implements Repository {
 
   async markBookExported(id: ID) {
     await this.db.runAsync("UPDATE books SET status = 'exported', updated_at = ? WHERE id = ? AND status = 'draft'", now(), id);
+  }
+
+  async updateBookCover(id: ID, patch: BookCoverPatch) {
+    const cols: Record<keyof BookCoverPatch, string | null> = { title: 'title', subtitle: 'subtitle', spineText: 'spine_text', emblemUri: 'emblem_uri', coverAssetId: null };
+    const t = now();
+    await this.db.withTransactionAsync(async () => {
+      for (const [k, v] of Object.entries(patch) as [keyof BookCoverPatch, string | null][]) {
+        const col = cols[k];
+        if (col) await this.db.runAsync(`UPDATE books SET ${col} = ?, updated_at = ? WHERE id = ?`, v, t, id);
+      }
+      if (patch.coverAssetId !== undefined) {
+        await this.db.runAsync(
+          "UPDATE book_pages SET asset_ids = ?, updated_at = ? WHERE book_id = ? AND layout = 'cover'",
+          JSON.stringify(patch.coverAssetId ? [patch.coverAssetId] : []), t, id,
+        );
+      }
+    });
   }
 
   async getStats(): Promise<VaultStats> {

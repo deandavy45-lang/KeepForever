@@ -1,5 +1,8 @@
 # 05 · The Keep referral bridge
 
+The Keep is an external legacy vault partner service in the same corporate group, paid on its own
+web gateways. In Keep Forever it is informational and account-link only (see doc 04).
+
 All rules live in `src/features/keep-referral/config.ts`; the decision is a pure function
 (`eligibility.ts`) so it is easy to test and audit.
 
@@ -15,10 +18,11 @@ All rules live in `src/features/keep-referral/config.ts`; the decision is a pure
 
 1. Card → **explainer screen** (`/legacy`): what The Keep is, that it is separate, and
    "what we share: nothing from your vault".
-2. "Visit The Keep" opens the **in-app browser** (SFSafariViewController / Chrome Custom Tabs).
+2. "Visit The Keep" opens `https://thekeepvault.co.za`; "I already have a Keep account" opens
+   `https://admin.thekeepvault.co.za`. Both use the **in-app browser** (SFSafariViewController / Chrome Custom Tabs).
    The user can close it and land back where they were.
-3. URL: `EXPO_PUBLIC_KEEP_REFERRAL_URL?utm_source=forkeeps&utm_medium=app&utm_campaign=legacy_referral&utm_content=<surface>&ref=<install uuid>`.
-4. On The Keep, after sign-up, the user may choose "Connect my For Keeps vault". The Keep's
+3. URL: `EXPO_PUBLIC_KEEP_REFERRAL_URL?utm_source=keepforever&utm_medium=app&utm_campaign=legacy_referral&utm_content=<surface>&ref=<install uuid>`.
+4. On The Keep, after sign-up, the user may choose "Connect my Keep Forever vault". The Keep's
    backend sets `keep_referrals.keep_account_linked_at` with the service role. Vault transfer is a
    separate, explicit, user-approved step (future).
 

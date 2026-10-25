@@ -5,7 +5,7 @@
 | Layer | Choice | Why |
 |---|---|---|
 | App framework | **Expo SDK 58 / React Native 0.88, TypeScript** | One codebase for iOS + Android, cloud builds via EAS (no Mac needed), web preview for VS Code |
-| Navigation | **Expo Router** (file-based, `src/app/`) | Deep links (`forkeeps://`) and typed routes for free |
+| Navigation | **Expo Router** (file-based, `src/app/`) | Deep links (`keepforever://`) and typed routes for free |
 | Local data | **expo-sqlite** behind a `Repository` interface | Local-first: works offline, fast, private by default |
 | Browser preview | `WebRepository` (in-memory + localStorage) | `npx expo start --web` runs with zero native setup |
 | Cloud (optional) | **Supabase**: Postgres + Auth + Storage + RLS | Family sharing and backup later without changing screens |
