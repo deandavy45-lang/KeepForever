@@ -1,0 +1,9 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    { "label": "Install", "type": "shell", "command": "npm install", "problemMatcher": [] },
+    { "label": "Preview in browser", "type": "shell", "command": "npx expo start --web", "isBackground": true, "problemMatcher": [] },
+    { "label": "Start (phone via Expo dev build)", "type": "shell", "command": "npx expo start", "isBackground": true, "problemMatcher": [] },
+    { "label": "Typecheck", "type": "shell", "command": "npx tsc --noEmit", "problemMatcher": ["$tsc"], "group": "test" }
+  ]
+}

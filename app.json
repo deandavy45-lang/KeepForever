@@ -1,25 +1,59 @@
 {
   "expo": {
-    "name": "for-keeps",
+    "name": "For Keeps",
     "slug": "for-keeps",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.forkeeps.app",
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "For Keeps uses your photo library so you can add photos to your family memories and keepsake books.",
+        "NSCameraUsageDescription": "For Keeps uses the camera so you can capture new memories.",
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#FBF7F1",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.forkeeps.app",
+      "blockedPermissions": [
+        "android.permission.READ_MEDIA_IMAGES",
+        "android.permission.READ_MEDIA_VIDEO",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "output": "single",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-sqlite",
+      "expo-sharing",
+      "expo-web-browser",
+      "expo-image",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "For Keeps uses your photo library so you can add photos to your family memories and keepsake books.",
+          "cameraPermission": "For Keeps uses the camera so you can capture new memories.",
+          "microphonePermission": false
+        }
+      ]
+    ],
+    "scheme": "forkeeps",
+    "experiments": {
+      "typedRoutes": true
     }
   }
 }

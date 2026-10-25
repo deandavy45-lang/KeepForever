@@ -1,0 +1,8 @@
+{
+  "name": "For Keeps",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:22",
+  "postCreateCommand": "npm install",
+  "forwardPorts": [8081],
+  "portsAttributes": { "8081": { "label": "Expo web preview", "onAutoForward": "openBrowser" } },
+  "customizations": { "vscode": { "extensions": ["expo.vscode-expo-tools", "esbenp.prettier-vscode", "dbaeumer.vscode-eslint"] } }
+}
