@@ -1,13 +1,12 @@
 /**
  * Local SQLite schema, applied in order and tracked with PRAGMA user_version.
  * Never edit a shipped migration; append a new one.
+ * Migrations run inside a transaction, so they must NOT contain connection PRAGMAs
+ * (journal_mode, foreign_keys). Those are set in SQLiteRepository.configureConnection().
  * Mirrors supabase/migrations/0001_init.sql (minus auth/RLS) so rows sync 1:1.
  */
 export const migrations: string[] = [
   /* 1: initial schema */ `
-  PRAGMA journal_mode = WAL;
-  PRAGMA foreign_keys = ON;
-
   CREATE TABLE vaults (
     id TEXT PRIMARY KEY NOT NULL,
     name TEXT NOT NULL,

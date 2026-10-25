@@ -42,7 +42,8 @@
     "doctor": "npx expo-doctor",
     "build:dev": "npx eas-cli@latest build --profile development",
     "build:prod": "npx eas-cli@latest build --profile production --platform all",
-    "submit": "npx eas-cli@latest submit --platform all"
+    "submit": "npx eas-cli@latest submit --platform all",
+    "test:db": "node scripts/test-sqlite.cjs"
   },
   "private": true
 }

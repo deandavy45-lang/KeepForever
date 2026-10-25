@@ -49,7 +49,23 @@ export class SQLiteRepository implements Repository {
   private vaultId: ID = '';
   constructor(private db: SQLiteDatabase) {}
 
+  /**
+   * Connection-level settings. Must run outside any transaction: SQLite rejects
+   * `journal_mode = WAL` inside one ("cannot change into wal mode from within a transaction"),
+   * and silently ignores `foreign_keys` inside one.
+   */
+  private async configureConnection() {
+    try {
+      await this.db.execAsync('PRAGMA journal_mode = WAL');
+    } catch (e) {
+      // Some targets (e.g. in-memory or web/OPFS builds) can't use WAL; the default journal is fine.
+      console.warn('[sqlite] WAL unavailable, using default journal mode', e);
+    }
+    await this.db.execAsync('PRAGMA foreign_keys = ON');
+  }
+
   async init() {
+    await this.configureConnection();
     const { user_version } = (await this.db.getFirstAsync<{ user_version: number }>('PRAGMA user_version')) ?? { user_version: 0 };
     for (let v = user_version; v < migrations.length; v++) {
       await this.db.withTransactionAsync(async () => {
@@ -57,7 +73,6 @@ export class SQLiteRepository implements Repository {
         await this.db.execAsync(`PRAGMA user_version = ${v + 1}`);
       });
     }
-    await this.db.execAsync('PRAGMA foreign_keys = ON');
     const vault = await this.db.getFirstAsync<Row>('SELECT id FROM vaults WHERE deleted_at IS NULL LIMIT 1');
     if (vault) {
       this.vaultId = vault.id;
