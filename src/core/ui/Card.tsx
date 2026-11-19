@@ -21,7 +21,7 @@ export function Card({
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
       onPress={onPress}
-      style={({ pressed }) => [...base, pressed && { opacity: 0.9 }]}
+      style={({ pressed }) => [...base, pressed && styles.pressed]}
     >
       {children}
     </Pressable>
@@ -29,5 +29,16 @@ export function Card({
 }
 
 const styles = StyleSheet.create({
-  card: { borderRadius: radius.lg, borderWidth: StyleSheet.hairlineWidth, padding: space.lg, gap: space.sm },
+  card: {
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    padding: space.lg,
+    gap: space.sm,
+    shadowColor: '#2B2622',
+    shadowOpacity: 0.06,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 2,
+  },
+  pressed: { opacity: 0.94, transform: [{ scale: 0.99 }] },
 });

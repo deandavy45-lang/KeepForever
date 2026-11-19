@@ -25,18 +25,18 @@ export default function TimelineScreen() {
   }
 
   return (
-    <Screen>
+    <Screen contentStyle={{ gap: space.xl }}>
       <Button label="Add a memory" onPress={() => router.push('/memory/new')} />
       <KeepCard surface="timeline_card" />
       {groupByYear(memories).map(({ year, data }) => (
-        <View key={year} style={{ gap: space.md }}>
+        <View key={year} style={{ gap: space.lg }}>
           <SectionHeader eyebrow={`${data.length} ${data.length === 1 ? 'memory' : 'memories'}`} title={year} />
           {data.map((m) => (
             <MemoryCard key={m.id} memory={m} />
           ))}
         </View>
       ))}
-      <Text variant="caption" muted style={{ textAlign: 'center' }}>
+      <Text variant="caption" muted style={{ textAlign: 'center', paddingTop: space.md }}>
         That's everything so far.
       </Text>
     </Screen>
